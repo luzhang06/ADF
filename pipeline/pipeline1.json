@@ -4,6 +4,7 @@
 		"activities": [
 			{
 				"name": "Machine Learning Execute Pipeline1",
+				"description": "updated description",
 				"type": "AzureMLExecutePipeline",
 				"dependsOn": [],
 				"policy": {
