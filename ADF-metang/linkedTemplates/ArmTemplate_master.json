@@ -1,0 +1,84 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "ADF-metang"
+		},
+		"AzureBlobStorage1_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'AzureBlobStorage1'"
+		},
+		"AzureMLService_LUZHAN_servicePrincipalKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'servicePrincipalKey' of 'AzureMLService_LUZHAN'"
+		},
+		"AzureMLService_LUZHAN_properties_typeProperties_subscriptionId": {
+			"type": "string",
+			"defaultValue": "ee85ed72-2b26-48f6-a0e8-cb5bcf98fbd9"
+		},
+		"AzureMLService_LUZHAN_properties_typeProperties_resourceGroupName": {
+			"type": "string",
+			"defaultValue": "LUZHAN"
+		},
+		"AzureMLService_LUZHAN_properties_typeProperties_servicePrincipalId": {
+			"type": "string",
+			"defaultValue": "d3f9993b-95c2-4f29-8e01-b89a6f63ebbd"
+		},
+		"AzureMLService_LUZHAN_properties_typeProperties_tenant": {
+			"type": "string",
+			"defaultValue": "72f988bf-86f1-41af-91ab-2d7cd011db47"
+		},
+		"containerUri": {
+			"type": "string",
+			"metadata": "URI to storage account containing linked ARM templates"
+		},
+		"containerSasToken": {
+			"type": "string",
+			"metadata": "Sas token to storage account containing linked ARM templates"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "ADF-metang_ArmTemplate_0",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_0.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"AzureBlobStorage1_connectionString": {
+						"value": "[parameters('AzureBlobStorage1_connectionString')]"
+					},
+					"AzureMLService_LUZHAN_servicePrincipalKey": {
+						"value": "[parameters('AzureMLService_LUZHAN_servicePrincipalKey')]"
+					},
+					"AzureMLService_LUZHAN_properties_typeProperties_subscriptionId": {
+						"value": "[parameters('AzureMLService_LUZHAN_properties_typeProperties_subscriptionId')]"
+					},
+					"AzureMLService_LUZHAN_properties_typeProperties_resourceGroupName": {
+						"value": "[parameters('AzureMLService_LUZHAN_properties_typeProperties_resourceGroupName')]"
+					},
+					"AzureMLService_LUZHAN_properties_typeProperties_servicePrincipalId": {
+						"value": "[parameters('AzureMLService_LUZHAN_properties_typeProperties_servicePrincipalId')]"
+					},
+					"AzureMLService_LUZHAN_properties_typeProperties_tenant": {
+						"value": "[parameters('AzureMLService_LUZHAN_properties_typeProperties_tenant')]"
+					}
+				}
+			},
+			"dependsOn": []
+		}
+	]
+}

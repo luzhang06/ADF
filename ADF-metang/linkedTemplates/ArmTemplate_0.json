@@ -1,0 +1,107 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "ADF-metang"
+		},
+		"AzureBlobStorage1_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'AzureBlobStorage1'"
+		},
+		"AzureMLService_LUZHAN_servicePrincipalKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'servicePrincipalKey' of 'AzureMLService_LUZHAN'"
+		},
+		"AzureMLService_LUZHAN_properties_typeProperties_subscriptionId": {
+			"type": "string",
+			"defaultValue": "ee85ed72-2b26-48f6-a0e8-cb5bcf98fbd9"
+		},
+		"AzureMLService_LUZHAN_properties_typeProperties_resourceGroupName": {
+			"type": "string",
+			"defaultValue": "LUZHAN"
+		},
+		"AzureMLService_LUZHAN_properties_typeProperties_servicePrincipalId": {
+			"type": "string",
+			"defaultValue": "d3f9993b-95c2-4f29-8e01-b89a6f63ebbd"
+		},
+		"AzureMLService_LUZHAN_properties_typeProperties_tenant": {
+			"type": "string",
+			"defaultValue": "72f988bf-86f1-41af-91ab-2d7cd011db47"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureBlobStorage1')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobStorage",
+				"typeProperties": {
+					"connectionString": "[parameters('AzureBlobStorage1_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureMLService_LUZHAN')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureMLService",
+				"typeProperties": {
+					"subscriptionId": "[parameters('AzureMLService_LUZHAN_properties_typeProperties_subscriptionId')]",
+					"resourceGroupName": "[parameters('AzureMLService_LUZHAN_properties_typeProperties_resourceGroupName')]",
+					"mlWorkspaceName": "luzhan-north-europe",
+					"servicePrincipalId": "[parameters('AzureMLService_LUZHAN_properties_typeProperties_servicePrincipalId')]",
+					"servicePrincipalKey": {
+						"type": "SecureString",
+						"value": "[parameters('AzureMLService_LUZHAN_servicePrincipalKey')]"
+					},
+					"tenant": "[parameters('AzureMLService_LUZHAN_properties_typeProperties_tenant')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pipeline1')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Machine Learning Execute Pipeline1",
+						"type": "AzureMLExecutePipeline",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"mlPipelineId": "5e4fd61a-d372-4b7b-bafd-04c58244a072"
+						},
+						"linkedServiceName": {
+							"referenceName": "AzureMLService_LUZHAN",
+							"type": "LinkedServiceReference"
+						}
+					}
+				],
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureMLService_LUZHAN')]"
+			]
+		}
+	]
+}
