@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Copy data1",
+				"name": "Copy data",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
@@ -23,7 +23,7 @@
 				"type": "AzureMLExecutePipeline",
 				"dependsOn": [
 					{
-						"activity": "Copy data1",
+						"activity": "Copy data",
 						"dependencyConditions": [
 							"Succeeded"
 						]
