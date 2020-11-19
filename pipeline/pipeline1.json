@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Machine Learning Execute Pipeline",
+				"name": "Machine Learning Execute Pipeline2",
 				"type": "AzureMLExecutePipeline",
 				"dependsOn": [],
 				"policy": {
